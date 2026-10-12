@@ -23,10 +23,11 @@ The gpu variant runs on the CPU until you [turn Vulkan on](#vulkan-is-off-by-def
 | Target                   | cpu | gpu | Status                                                                     |
 |--------------------------|-----|-----|----------------------------------------------------------------------------|
 | `x86_64-linux-gnu.2.17`  | ✅  | ✅  | Built and tested                                                           |
-| `aarch64-linux-gnu.2.17` | ➕  | ➕  | Should cross-compile. Untested: to be tested on an ARM CI runner           |
+| `aarch64-linux-gnu.2.17` | ✅  | ✅  | Built and tested (cross-compiled, tested on an ARM runner)                 |
+| `x86_64-linux-musl`      | ✅  | ❌  | Built and tested, static. No GPU: GPU drivers are glibc libraries          |
+| `aarch64-linux-musl`     | ✅  | ❌  | Built and tested, static (cross-compiled, tested on an ARM runner)         |
 | `x86_64-windows-gnu`     | ➕  | ➕  | Should cross-compile. Untested: to be tested on a Windows CI runner        |
 | `aarch64-macos`          | ➕  | ➕  | CPU should work. GPU build probably works, but running it needs MoltenVK   |
-| `x86_64-linux-musl`      | ✅  | ❌  | Built and tested, static. No GPU: GPU drivers are glibc libraries          |
 
 ✅ done · ➕ planned · ❌ not possible
 

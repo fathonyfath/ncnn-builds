@@ -17,17 +17,20 @@ permissions:
   contents: read
 
 jobs:
+  # every target is cross-compiled from x86_64
   build:
     name: Build (${{ matrix.variant }}, ${{ matrix.target }})
     strategy:
       fail-fast: false
       matrix:
         variant: [cpu, gpu]
-        target: [x86_64-linux-gnu.2.17]
+        target: [x86_64-linux-gnu.2.17, aarch64-linux-gnu.2.17]
         # musl is cpu only: GPU drivers are glibc libraries
         include:
           - variant: cpu
             target: x86_64-linux-musl
+          - variant: cpu
+            target: aarch64-linux-musl
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
@@ -62,12 +65,15 @@ jobs:
       fail-fast: false
       matrix:
         variant: [cpu, gpu]
-        target: [x86_64-linux-gnu.2.17]
+        target: [x86_64-linux-gnu.2.17, aarch64-linux-gnu.2.17]
         # musl is cpu only: GPU drivers are glibc libraries
         include:
           - variant: cpu
             target: x86_64-linux-musl
-    runs-on: ubuntu-22.04
+          - variant: cpu
+            target: aarch64-linux-musl
+    # the smoke test runs the binary, so aarch64 archives need an ARM runner
+    runs-on: ${{ startsWith(matrix.target, 'aarch64-') && 'ubuntu-22.04-arm' || 'ubuntu-22.04' }}
     steps:
       - uses: actions/checkout@v7
 
