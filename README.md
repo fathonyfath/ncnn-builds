@@ -16,6 +16,8 @@ What each variant depends on:
 
 glibc targets are built against an old glibc (2.17) so the result runs on older distros.
 
+The gpu variant runs on the CPU until you [turn Vulkan on](#vulkan-is-off-by-default).
+
 ## Targets
 
 | Target                   | cpu | gpu | Status                                                                     |
@@ -123,3 +125,29 @@ if (b.lazyDependency("ncnn_gpu_x86_64_linux", .{})) |ncnn| {
     exe.linkLibC();
 }
 ```
+
+The cpu archive needs only the first two lines and `linkLibC()`.
+
+### Vulkan is off by default
+
+> [!IMPORTANT]
+> The gpu archive runs on the CPU unless you enable `use_vulkan_compute` on each net, before loading
+> the model. If no Vulkan device is found, ncnn falls back to the CPU.
+
+```c
+#include <ncnn/c_api.h>
+
+ncnn_net_t net = ncnn_net_create();
+ncnn_option_set_use_vulkan_compute(ncnn_net_get_option(net), 1); // must come before loading
+ncnn_net_load_param(net, "model.param");
+ncnn_net_load_model(net, "model.bin");
+
+// switch at runtime: the option is only read at load time, so unload and load again
+ncnn_net_clear(net);
+ncnn_option_set_use_vulkan_compute(ncnn_net_get_option(net), 0);
+ncnn_net_load_param(net, "model.param");
+ncnn_net_load_model(net, "model.bin");
+```
+
+True as of ncnn `20260526`: see the default in [`option.cpp`](https://github.com/Tencent/ncnn/blob/e54f7b1f88434e1d844ea0551b880a1cfb079ce1/src/option.cpp#L33) and upstream's
+[Vulkan FAQ](https://github.com/Tencent/ncnn/blob/e54f7b1f88434e1d844ea0551b880a1cfb079ce1/docs/how-to-use-and-FAQ/FAQ-ncnn-vulkan.md).
