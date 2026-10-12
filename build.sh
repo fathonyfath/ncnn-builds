@@ -2,8 +2,8 @@
 # Build ncnn with Zig as the C/C++ toolchain and package it as a release archive.
 #
 # usage: ./build.sh <cpu|gpu> [zig-target]
-#   ./build.sh cpu x86_64-linux-gnu.2.28
-#   ./build.sh gpu x86_64-linux-gnu.2.28
+#   ./build.sh cpu x86_64-linux-gnu.2.17
+#   ./build.sh gpu x86_64-linux-gnu.2.17
 #
 # ncnn is fetched into ./ncnn at the release pinned in ncnn.version (tag + commit, verified).
 # NCNN_REF=<tag|branch|commit> builds that ref instead; anything that isn't a release tag is
@@ -16,7 +16,7 @@ set -eu
 
 ROOT=$(cd "$(dirname "$0")" && pwd)
 VARIANT=${1:-}
-TARGET=${2:-x86_64-linux-gnu.2.28}
+TARGET=${2:-x86_64-linux-gnu.2.17}
 ZIG=${ZIG:-zig}
 
 die() { echo "error: $*" >&2; exit 1; }

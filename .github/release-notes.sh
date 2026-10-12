@@ -14,7 +14,7 @@ NCNN_COMMIT=$(sed -n 's/^commit=//p' "$ROOT/ncnn.version")
 ZIG=$(cat "$ROOT/.zigversion")
 URL=https://github.com/$REPO/releases/download/$TAG
 
-# x86_64-linux-gnu.2.28 -> "x86_64 Linux, glibc ≥ 2.28"
+# x86_64-linux-gnu.2.17 -> "x86_64 Linux, glibc ≥ 2.17"
 describe_target() {
     arch=${1%%-*}
     case "$1" in

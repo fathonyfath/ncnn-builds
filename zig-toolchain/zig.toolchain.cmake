@@ -1,8 +1,8 @@
 # Use Zig as the C/C++ toolchain.
-# Target comes from $ZIG_TARGET (default x86_64-linux-gnu.2.28); Zig binary from $ZIG (default: zig on PATH).
+# Target comes from $ZIG_TARGET (default x86_64-linux-gnu.2.17); Zig binary from $ZIG (default: zig on PATH).
 set(ZIG_TARGET "$ENV{ZIG_TARGET}")
 if(NOT ZIG_TARGET)
-    set(ZIG_TARGET "x86_64-linux-gnu.2.28")
+    set(ZIG_TARGET "x86_64-linux-gnu.2.17")
 endif()
 
 # CPU arch is the first component of the triple (x86_64, aarch64, ...)

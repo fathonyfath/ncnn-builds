@@ -14,14 +14,14 @@ What each variant depends on:
 | Vulkan                  | ❌ not used                          | loaded at runtime (`SIMPLEVK`), nothing to link   |
 | Linking it              | any C/Zig toolchain                  | Zig (`linkLibCpp()`), version in `.zigversion`    |
 
-glibc targets are built against an old glibc (2.28) so the result runs on older distros.
+glibc targets are built against an old glibc (2.17) so the result runs on older distros.
 
 ## Targets
 
 | Target                   | cpu | gpu | Status                                                                     |
 |--------------------------|-----|-----|----------------------------------------------------------------------------|
-| `x86_64-linux-gnu.2.28`  | ✅  | ✅  | Built and tested                                                           |
-| `aarch64-linux-gnu.2.28` | ➕  | ➕  | Should cross-compile. Untested: to be tested on an ARM CI runner           |
+| `x86_64-linux-gnu.2.17`  | ✅  | ✅  | Built and tested                                                           |
+| `aarch64-linux-gnu.2.17` | ➕  | ➕  | Should cross-compile. Untested: to be tested on an ARM CI runner           |
 | `x86_64-windows-gnu`     | ➕  | ➕  | Should cross-compile. Untested: to be tested on a Windows CI runner        |
 | `aarch64-macos`          | ➕  | ➕  | CPU should work. GPU build probably works, but running it needs MoltenVK   |
 | `x86_64-linux-musl`      | ➖  | ❌  | Dropped. GPU is impossible (GPU drivers are glibc libraries)               |
@@ -34,8 +34,8 @@ Requirements: `cmake`, the Zig version in `.zigversion`, `git`, `tar`/`gzip` (`z
 
 ```sh
 git clone <this repo>
-./build.sh cpu x86_64-linux-gnu.2.28
-./build.sh gpu x86_64-linux-gnu.2.28
+./build.sh cpu x86_64-linux-gnu.2.17
+./build.sh gpu x86_64-linux-gnu.2.17
 ```
 
 `build.sh` fetches ncnn into `ncnn/` at the release pinned in `ncnn.version`, and checks that the tag
@@ -58,8 +58,8 @@ Use `ZIG=/path/to/zig` to pick a specific Zig binary.
 Build any ncnn tag, branch or commit instead of the pinned release:
 
 ```sh
-NCNN_REF=master ./build.sh gpu x86_64-linux-gnu.2.28
-# -> dist/ncnn-master-20260924-c6b351b-gpu-x86_64-linux-gnu.2.28.tar.gz
+NCNN_REF=master ./build.sh gpu x86_64-linux-gnu.2.17
+# -> dist/ncnn-master-20260924-c6b351b-gpu-x86_64-linux-gnu.2.17.tar.gz
 ```
 
 In CI: Actions → Build → Run workflow, with `ncnn_ref` set. The archives are attached to that run;
@@ -87,9 +87,9 @@ Releases are versioned `<ncnn tag>.<build count>`, picked automatically:
 
 | Situation                                   | Release        | Archive                                      |
 |---------------------------------------------|----------------|----------------------------------------------|
-| First build of ncnn `20260526`              | `20260526.1`   | `ncnn-20260526.1-gpu-x86_64-linux-gnu.2.28…` |
-| Rebuild of the same ncnn (Zig, flags, …)    | `20260526.2`   | `ncnn-20260526.2-gpu-x86_64-linux-gnu.2.28…` |
-| ncnn updated to `20261015`                  | `20261015.1`   | `ncnn-20261015.1-gpu-x86_64-linux-gnu.2.28…` |
+| First build of ncnn `20260526`              | `20260526.1`   | `ncnn-20260526.1-gpu-x86_64-linux-gnu.2.17…` |
+| Rebuild of the same ncnn (Zig, flags, …)    | `20260526.2`   | `ncnn-20260526.2-gpu-x86_64-linux-gnu.2.17…` |
+| ncnn updated to `20261015`                  | `20261015.1`   | `ncnn-20261015.1-gpu-x86_64-linux-gnu.2.17…` |
 
 Earlier releases are never changed, so their URLs and `build.zig.zon` hashes stay valid.
 
@@ -98,7 +98,7 @@ Earlier releases are never changed, so their URLs and `build.zig.zon` hashes sta
 Add the archive for your target to `build.zig.zon`:
 
 ```sh
-zig fetch --save=ncnn_gpu_x86_64_linux https://github.com/fathonyfath/ncnn-zig/releases/download/<release>/ncnn-<release>-gpu-x86_64-linux-gnu.2.28.tar.gz
+zig fetch --save=ncnn_gpu_x86_64_linux https://github.com/fathonyfath/ncnn-zig/releases/download/<release>/ncnn-<release>-gpu-x86_64-linux-gnu.2.17.tar.gz
 ```
 
 Then in `build.zig`:
