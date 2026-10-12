@@ -44,7 +44,9 @@ pub fn build(b: *std.Build) void {
     mod.addIncludePath(pkg.path(b, "include"));
     mod.addObjectFile(pkg.path(b, "lib/libncnn.a"));
     if (gpu) mod.addObjectFile(pkg.path(b, "lib/libglslang.a"));
-    const smoke = b.addExecutable(.{ .name = "smoke", .root_module = mod });
+    // musl: fully static, so the binary runs on any Linux
+    const musl = query.abi != null and query.abi.?.isMusl();
+    const smoke = b.addExecutable(.{ .name = "smoke", .root_module = mod, .linkage = if (musl) .static else null });
 
     const run = b.addRunArtifact(smoke);
     run.addFileArg(b.path("test/models/squeezenet_v1.1.param"));
@@ -57,17 +59,21 @@ pub fn build(b: *std.Build) void {
     if (gpu and require_vulkan) run.expectStdErrMatch("[0 ");
     test_step.dependOn(&run.step);
 
-    // glibc targets must not need a newer glibc than the one they were built for
-    if (query.glibc_version) |want| {
+    // glibc targets must not need a newer glibc than the one they were built for;
+    // musl binaries must not need anything
+    const requirement: ?[]const u8 = if (query.glibc_version) |want|
+        b.fmt("{d}.{d}", .{ want.major, want.minor })
+    else if (musl) "static" else null;
+    if (requirement) |arg| {
         const check = b.addRunArtifact(b.addExecutable(.{
-            .name = "glibc-check",
+            .name = "check-binary",
             .root_module = b.createModule(.{
-                .root_source_file = b.path("test/glibc_check.zig"),
+                .root_source_file = b.path("test/check_binary.zig"),
                 .target = b.graph.host,
             }),
         }));
         check.addArtifactArg(smoke);
-        check.addArg(b.fmt("{d}.{d}", .{ want.major, want.minor }));
+        check.addArg(arg);
         test_step.dependOn(&check.step);
     }
 }

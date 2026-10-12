@@ -8,7 +8,7 @@ What each variant depends on:
 
 |                         | cpu                                  | gpu                                               |
 |-------------------------|--------------------------------------|---------------------------------------------------|
-| C library + math (libm) | ✅ glibc (shared)                    | ✅ glibc (shared)                                 |
+| C library + math (libm) | ✅ glibc (shared) or musl (static)   | ✅ glibc (shared)                                 |
 | C++ standard library    | ❌ none (`SIMPLESTL`, `-nostdinc++`) | ✅ libc++, static (from Zig)                      |
 | OpenMP runtime          | ❌ none (`SIMPLEOMP`)                | ❌ none (`SIMPLEOMP`)                             |
 | Vulkan                  | ❌ not used                          | loaded at runtime (`SIMPLEVK`), nothing to link   |
@@ -24,9 +24,9 @@ glibc targets are built against an old glibc (2.17) so the result runs on older 
 | `aarch64-linux-gnu.2.17` | ➕  | ➕  | Should cross-compile. Untested: to be tested on an ARM CI runner           |
 | `x86_64-windows-gnu`     | ➕  | ➕  | Should cross-compile. Untested: to be tested on a Windows CI runner        |
 | `aarch64-macos`          | ➕  | ➕  | CPU should work. GPU build probably works, but running it needs MoltenVK   |
-| `x86_64-linux-musl`      | ➖  | ❌  | Dropped. GPU is impossible (GPU drivers are glibc libraries)               |
+| `x86_64-linux-musl`      | ✅  | ❌  | Built and tested, static. No GPU: GPU drivers are glibc libraries          |
 
-✅ done · ➕ planned · ➖ dropped · ❌ not possible
+✅ done · ➕ planned · ❌ not possible
 
 ## Building
 
@@ -61,7 +61,7 @@ zig build test -Darchive=dist/ncnn-<version>-gpu-x86_64-linux-gnu.2.17.tar.gz
 
 This unpacks the archive, builds `test/smoke.c` against it for the archive's target, runs SqueezeNet
 (`test/models/`, from [ncnn-assets](https://github.com/nihui/ncnn-assets)) and checks that the binary
-needs no newer glibc than the target. The gpu variant falls back to CPU when there is no Vulkan
+needs no newer glibc than the target (musl: that it is fully static). The gpu variant falls back to CPU when there is no Vulkan
 device; add `-Drequire-vulkan` to make that an error.
 
 ## Off-release builds
