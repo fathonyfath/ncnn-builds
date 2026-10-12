@@ -152,3 +152,11 @@ ncnn_net_load_model(net, "model.bin");
 
 True as of ncnn `20260526`: see the default in [`option.cpp`](https://github.com/Tencent/ncnn/blob/e54f7b1f88434e1d844ea0551b880a1cfb079ce1/src/option.cpp#L33) and upstream's
 [Vulkan FAQ](https://github.com/Tencent/ncnn/blob/e54f7b1f88434e1d844ea0551b880a1cfb079ce1/docs/how-to-use-and-FAQ/FAQ-ncnn-vulkan.md).
+
+## License
+
+The build scripts in this repository are under the [BSD Zero Clause License](LICENSE): do whatever
+you want with them. That does not cover what they build or bundle:
+
+- ncnn and glslang keep their own licenses, shipped in each archive under `LICENSES/`.
+- The SqueezeNet test model is BSD 2-Clause, see [`test/models/LICENSE`](test/models/LICENSE).
