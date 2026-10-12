@@ -1,4 +1,4 @@
-# ncnn-zig
+# ncnn-builds
 
 Prebuilt static [ncnn](https://github.com/Tencent/ncnn) libraries, compiled with Zig as the C/C++ toolchain.
 
@@ -112,7 +112,7 @@ Earlier releases are never changed, so their URLs and `build.zig.zon` hashes sta
 Add the archive for your target to `build.zig.zon`:
 
 ```sh
-zig fetch --save=ncnn_gpu_x86_64_linux https://github.com/fathonyfath/ncnn-zig/releases/download/<release>/ncnn-<release>-gpu-x86_64-linux-gnu.2.17.tar.gz
+zig fetch --save=ncnn_gpu_x86_64_linux https://github.com/fathonyfath/ncnn-builds/releases/download/<release>/ncnn-<release>-gpu-x86_64-linux-gnu.2.17.tar.gz
 ```
 
 Then in `build.zig`:
