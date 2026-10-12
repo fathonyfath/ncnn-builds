@@ -53,6 +53,17 @@ ncnn-<version>-<variant>-<target>/
 
 Use `ZIG=/path/to/zig` to pick a specific Zig binary.
 
+## Testing
+
+```sh
+zig build test -Darchive=dist/ncnn-<version>-gpu-x86_64-linux-gnu.2.17.tar.gz
+```
+
+This unpacks the archive, builds `test/smoke.c` against it for the archive's target, runs SqueezeNet
+(`test/models/`, from [ncnn-assets](https://github.com/nihui/ncnn-assets)) and checks that the binary
+needs no newer glibc than the target. The gpu variant falls back to CPU when there is no Vulkan
+device; add `-Drequire-vulkan` to make that an error.
+
 ## Off-release builds
 
 Build any ncnn tag, branch or commit instead of the pinned release:

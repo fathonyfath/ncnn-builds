@@ -83,8 +83,6 @@ jobs:
           path: dist
 
       - name: smoke test
-        env:
-          REQUIRE_VULKAN: ${{ matrix.variant == 'gpu' && '1' || '0' }}
         run: |
           cd dist && sha256sum -c ./*.sha256 && cd ..
-          ./test/run.sh dist/*.tar.gz
+          zig build test -Darchive="$(echo dist/*.tar.gz)" -Drequire-vulkan --summary all
