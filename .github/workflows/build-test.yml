@@ -1,6 +1,6 @@
 name: Build and Test
 
-# Reusable: build every archive and smoke-test it. Called by ci.yml, publish.yml and update-ncnn.yml.
+# Reusable: build every archive and smoke-test it. Called by ci.yml and publish.yml.
 # ncnn_ref: build that ncnn tag/branch/commit instead of the release pinned in ncnn.version.
 on:
   workflow_call:

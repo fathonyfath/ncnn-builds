@@ -1,0 +1,34 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "reviewers": [
+    "fathonyfath"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "The ncnn release pinned in ncnn.version: its tag, and the commit it points at",
+      "managerFilePatterns": [
+        "/^ncnn\\.version$/"
+      ],
+      "matchStrings": [
+        "tag=(?<currentValue>\\S+)\\ncommit=(?<currentDigest>[0-9a-f]{40})"
+      ],
+      "depNameTemplate": "Tencent/ncnn",
+      "datasourceTemplate": "github-tags"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "A new ncnn is only released by hand, after merging",
+      "matchDepNames": [
+        "Tencent/ncnn"
+      ],
+      "prBodyNotes": [
+        "After merging, publish it: Actions → Publish → Run workflow (creates `{{{newValue}}}.1`)."
+      ]
+    }
+  ]
+}

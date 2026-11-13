@@ -81,8 +81,8 @@ off-release builds are never published as releases.
 
 ## Updating ncnn
 
-A daily workflow (`update-ncnn.yml`) checks for new ncnn releases. When there is one, it builds and
-tests it, then opens a PR that updates `ncnn.version`. Merge the PR, then run **Publish** (below).
+Renovate (`renovate.json`) opens a PR that updates `ncnn.version` when ncnn has a new release, and
+**Build** tests it on the PR. Merge the PR, then run **Publish** (below).
 
 To update by hand, edit `ncnn.version`:
 
