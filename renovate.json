@@ -22,12 +22,12 @@
   ],
   "packageRules": [
     {
-      "description": "A new ncnn is only released by hand, after merging",
+      "description": "Merging publishes the new ncnn, so say so on the PR",
       "matchDepNames": [
         "Tencent/ncnn"
       ],
       "prBodyNotes": [
-        "After merging, publish it: Actions → Publish → Run workflow (creates `{{{newValue}}}.1`)."
+        "Merging this publishes release `{{{newValue}}}.1` (the Publish workflow runs on the push to main)."
       ]
     }
   ]
