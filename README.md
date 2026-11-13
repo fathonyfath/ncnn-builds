@@ -81,8 +81,8 @@ off-release builds are never published as releases.
 
 ## Updating ncnn
 
-A daily workflow (`update-ncnn.yml`) checks for new ncnn releases. When there is one, it builds and
-tests it, then opens a PR that updates `ncnn.version`. Merge the PR, then run **Publish** (below).
+Renovate (`renovate.json`) opens a PR that updates `ncnn.version` when ncnn has a new release, and
+**Build** tests it on the PR. Merging the PR publishes the release (below).
 
 To update by hand, edit `ncnn.version`:
 
@@ -91,11 +91,14 @@ tag=<new-tag>
 commit=<commit the tag points at>
 ```
 
+Pushing that change to `main` publishes it too.
+
 ## Releasing
 
-Actions → Publish → Run workflow (on `main`). It builds and tests the release pinned in
-`ncnn.version`, then creates the tag at that commit and a GitHub release with the archives and
-`SHA256SUMS`.
+**Publish** runs on every push to `main` that changes `ncnn.version`, such as a merged update PR. For a
+rebuild of the same ncnn (new Zig, flags, targets, ...), run it by hand: Actions → Publish → Run
+workflow (on `main`). It builds and tests the release pinned in `ncnn.version`, then creates the tag
+at that commit and a GitHub release with the archives and `SHA256SUMS`.
 
 Releases are versioned `<ncnn tag>.<build count>`, picked automatically:
 

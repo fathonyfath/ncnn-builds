@@ -23,3 +23,15 @@ jobs:
     uses: ./.github/workflows/build-test.yml
     with:
       ncnn_ref: ${{ inputs.ncnn_ref || '' }}
+
+  # The one check main's ruleset requires, so targets can change without touching the ruleset.
+  # always(): a skipped required check counts as passing, so this must run (and fail) when builds fail.
+  ci-passed:
+    name: CI passed
+    if: always()
+    needs: build-test
+    runs-on: ubuntu-24.04
+    steps:
+      - run: test "$RESULT" = success
+        env:
+          RESULT: ${{ needs.build-test.result }}

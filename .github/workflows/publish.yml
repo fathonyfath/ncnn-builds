@@ -1,11 +1,20 @@
 name: Publish
 
-# Manual: build + test the ncnn release pinned in ncnn.version, then create the tag and the
+# On every push to main that changes ncnn.version (a merged update), or run by hand for a rebuild:
+# build + test the ncnn release pinned in ncnn.version, then create the tag and the
 # GitHub release (with archives + SHA256SUMS) at the commit this runs on. Only from main.
 # Release tags are <ncnn tag>.<build count>: the first build of ncnn 20260526 is 20260526.1,
 # a rebuild (new Zig, flags, targets, ...) is 20260526.2, and so on.
 on:
+  push:
+    branches: [main]
+    paths: [ncnn.version]
   workflow_dispatch:
+
+# one publish at a time, so two runs never pick the same build number
+concurrency:
+  group: publish
+  cancel-in-progress: false
 
 permissions:
   contents: read
